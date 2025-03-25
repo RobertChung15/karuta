@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtgnj01ybrpo0"]
+
+[sub_resource type="GDScript" id="GDScript_rgs8r"]
+script/source = "extend MarginContainer
+
+@onready var cardImage = str(\"res://Cards/\", CardName, \".png\")
+var CardName = \"cardsprite\" 
+
+func _ready():
+	print(cardImage)
+	var CardSize = rect_size
+	$CardImage.texture = load(cardImage)
+	$CardImage.scale *= CardSize/$CardImage.texture.get_size()
+"
+
+[node name="CardBase" type="MarginContainer"]
+custom_minimum_size = Vector2(250, 350)
+offset_right = 146.0
+offset_bottom = 214.0
+pivot_offset = Vector2(125, 175)
+script = SubResource("GDScript_rgs8r")
+
+[node name="CardImage" type="Sprite2D" parent="."]

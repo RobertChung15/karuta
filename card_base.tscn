@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtgnj01ybrpo0"]
+
+[ext_resource type="Texture2D" uid="uid://cp7k4mxvhtwy6" path="res://Cards/cardsprite.png" id="1_iegkh"]
+
+[sub_resource type="GDScript" id="GDScript_rgs8r"]
+script/source = "extends Node2D
+
+var card_being_dragged: Node2D = null
+var screen_size: Vector2
+var dragging = false
+var offset = Vector2()
+
+func _ready() -> void:
+	screen_size = get_viewport().size
+
+func _process(_delta: float) -> void:
+	if dragging:
+		position = get_global_mouse_position() + offset
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if(Input.is_action_just_pressed(\"leftClick\")):
+			if get_global_mouse_position().distance_to(position) < 50:
+				dragging = true
+				offset = position - get_global_mouse_position()
+		else:
+			dragging = false
+	if dragging:
+		position = get_global_mouse_position() + offset
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kokau"]
+size = Vector2(480, 629)
+
+[node name="CardBase" type="Node2D"]
+script = SubResource("GDScript_rgs8r")
+
+[node name="CardImage" type="Sprite2D" parent="."]
+position = Vector2(-244, -317)
+texture = ExtResource("1_iegkh")
+centered = false
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-2, 0.5)
+shape = SubResource("RectangleShape2D_kokau")
