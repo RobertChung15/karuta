@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://b01whpddtxbik"]
+[gd_scene load_steps=6 format=3 uid="uid://b01whpddtxbik"]
 
 [ext_resource type="Script" path="res://play_space.gd" id="1_3ko77"]
 [ext_resource type="Texture2D" uid="uid://d1nw05mqcxk31" path="res://background.jpg" id="1_d6pml"]
 [ext_resource type="PackedScene" uid="uid://dtgnj01ybrpo0" path="res://card_base.tscn" id="3_6eepd"]
+[ext_resource type="Texture2D" uid="uid://d4cd7ue0wahuw" path="res://CardSlot.png" id="4_dsawi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8yw73"]
+size = Vector2(142, 198)
 
 [node name="PlaySpace" type="Node2D"]
 script = ExtResource("1_3ko77")
@@ -11,10 +15,27 @@ script = ExtResource("1_3ko77")
 
 [node name="CardBase" parent="Cards" instance=ExtResource("3_6eepd")]
 position = Vector2(537, 294)
-scale = Vector2(0.25, 0.25)
+
+[node name="CardBase2" parent="Cards" instance=ExtResource("3_6eepd")]
+position = Vector2(905, 187)
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(1501, 1001)
+position = Vector2(1500, 1001)
 texture = ExtResource("1_d6pml")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+
+[node name="CardSlot" type="Node2D" parent="."]
+position = Vector2(246, 289)
+
+[node name="CardSlotImage" type="Sprite2D" parent="CardSlot"]
+position = Vector2(-2, 0)
+scale = Vector2(0.85181, 0.757072)
+texture = ExtResource("4_dsawi")
+
+[node name="Area2D" type="Area2D" parent="CardSlot"]
+position = Vector2(-6, 6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardSlot/Area2D"]
+position = Vector2(4, -4)
+shape = SubResource("RectangleShape2D_8yw73")

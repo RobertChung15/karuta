@@ -9,9 +9,13 @@ var card_being_dragged: Node2D = null
 var screen_size: Vector2
 var dragging = false
 var offset = Vector2()
+signal hovered
+signal hovered_off
 
 func _ready() -> void:
 	screen_size = get_viewport().size
+	add_to_group(\"draggable\")
+	
 
 func _process(_delta: float) -> void:
 	if dragging:
@@ -21,28 +25,53 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if(Input.is_action_just_pressed(\"leftClick\")):
-			if get_global_mouse_position().distance_to(position) < 50:
-				dragging = true
-				offset = position - get_global_mouse_position()
+			var clicked_objects = get_tree().get_nodes_in_group(\"draggable\")
+			var mouse_pos = get_global_mouse_position()
+			for obj in clicked_objects:
+				if get_global_mouse_position().distance_to(position) < 50:
+					dragging = true
+					offset = position - get_global_mouse_position()
 		else:
 			dragging = false
 	if dragging:
 		position = get_global_mouse_position() + offset
+		
+func _on_area_2d_mouse_entered() -> void:
+	highlight_card(self, true)
+
+func _on_area_2d_mouse_exited() -> void:
+	highlight_card(self, false)
+
+func highlight_card(card, hovered):
+	if hovered:
+		card.scale = Vector2(1.05, 1.05)
+		card.z_index = 2
+	else:
+		card.scale = Vector2(1, 1)
+		card.z_index = 1
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kokau"]
-size = Vector2(480, 629)
+size = Vector2(229, 294)
 
 [node name="CardBase" type="Node2D"]
+position = Vector2(2, 0)
+scale = Vector2(0.78246, 0.731904)
 script = SubResource("GDScript_rgs8r")
 
 [node name="CardImage" type="Sprite2D" parent="."]
-position = Vector2(-244, -317)
+position = Vector2(-101, -128)
+scale = Vector2(0.382279, 0.421185)
 texture = ExtResource("1_iegkh")
 centered = false
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2(93, -149)
+scale = Vector2(0.810472, 0.911323)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-2, 0.5)
+position = Vector2(-127.5, 168)
 shape = SubResource("RectangleShape2D_kokau")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
