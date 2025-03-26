@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b01whpddtxbik"]
+[gd_scene load_steps=7 format=3 uid="uid://b01whpddtxbik"]
 
 [ext_resource type="Script" path="res://play_space.gd" id="1_3ko77"]
 [ext_resource type="Texture2D" uid="uid://d1nw05mqcxk31" path="res://background.jpg" id="1_d6pml"]
 [ext_resource type="PackedScene" uid="uid://dtgnj01ybrpo0" path="res://card_base.tscn" id="3_6eepd"]
 [ext_resource type="PackedScene" uid="uid://xgtudmwld1y5" path="res://card_slot.tscn" id="4_m4qv0"]
+[ext_resource type="Script" path="res://PlayerHand.gd" id="5_ndyep"]
+[ext_resource type="Script" path="res://CardManager.gd" id="6_23amw"]
 
 [node name="PlaySpace" type="Node2D"]
 script = ExtResource("1_3ko77")
@@ -20,3 +22,10 @@ texture = ExtResource("1_d6pml")
 [node name="RayCast2D" type="RayCast2D" parent="."]
 
 [node name="CardSlot" parent="." instance=ExtResource("4_m4qv0")]
+
+[node name="PlayerHand" type="Node2D" parent="."]
+position = Vector2(583, 518)
+script = ExtResource("5_ndyep")
+
+[node name="CardManager" type="Node" parent="."]
+script = ExtResource("6_23amw")
