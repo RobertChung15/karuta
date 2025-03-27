@@ -1,31 +1,55 @@
-[gd_scene load_steps=7 format=3 uid="uid://b01whpddtxbik"]
+[gd_scene load_steps=9 format=3 uid="uid://b01whpddtxbik"]
 
 [ext_resource type="Script" path="res://play_space.gd" id="1_3ko77"]
 [ext_resource type="Texture2D" uid="uid://d1nw05mqcxk31" path="res://background.jpg" id="1_d6pml"]
-[ext_resource type="PackedScene" uid="uid://dtgnj01ybrpo0" path="res://card_base.tscn" id="3_6eepd"]
 [ext_resource type="PackedScene" uid="uid://xgtudmwld1y5" path="res://card_slot.tscn" id="4_m4qv0"]
 [ext_resource type="Script" path="res://PlayerHand.gd" id="5_ndyep"]
 [ext_resource type="Script" path="res://CardManager.gd" id="6_23amw"]
+[ext_resource type="Script" path="res://deck.gd" id="6_tamlp"]
+[ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Deck.png" id="7_kj8w7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1lfed"]
+size = Vector2(141.152, 237.638)
 
 [node name="PlaySpace" type="Node2D"]
 script = ExtResource("1_3ko77")
 
-[node name="Cards" type="Node" parent="."]
+[node name="CardManager" type="Node" parent="."]
+script = ExtResource("6_23amw")
 
-[node name="CardBase" parent="Cards" instance=ExtResource("3_6eepd")]
-position = Vector2(560, 215)
+[node name="Cards" type="Node" parent="."]
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(1500, 1001)
 texture = ExtResource("1_d6pml")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-
-[node name="CardSlot" parent="." instance=ExtResource("4_m4qv0")]
-
 [node name="PlayerHand" type="Node2D" parent="."]
 position = Vector2(583, 518)
 script = ExtResource("5_ndyep")
 
-[node name="CardManager" type="Node" parent="."]
-script = ExtResource("6_23amw")
+[node name="CardSlot" parent="." instance=ExtResource("4_m4qv0")]
+position = Vector2(788, 168)
+
+[node name="CardSlot2" parent="." instance=ExtResource("4_m4qv0")]
+position = Vector2(901, 165)
+scale = Vector2(0.513919, 0.523363)
+
+[node name="Deck" type="Node2D" parent="."]
+position = Vector2(99, 565)
+scale = Vector2(0.630525, 0.563883)
+script = ExtResource("6_tamlp")
+
+[node name="Area2D" type="Area2D" parent="Deck"]
+position = Vector2(4.57764e-05, 1.77344)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
+position = Vector2(2.37898, -3.54683)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_1lfed")
+
+[node name="Sprite2D" type="Sprite2D" parent="Deck"]
+position = Vector2(1.586, -5.32025)
+scale = Vector2(0.76433, 0.901529)
+texture = ExtResource("7_kj8w7")
+
+[connection signal="input_event" from="Deck/Area2D" to="Deck" method="_on_area_2d_input_event"]
