@@ -1,12 +1,13 @@
 extends Node2D
 
-const hand_size = 2
+const hand_size = 4
 const card_scene = "res://card_base.tscn"
 const card_width = 100
 var playerHand = []
 var centre_screen_x
 var hand_y_position = 590
 var player_hand_reference
+var deck = ["one", "two", "three", "four"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,9 +17,15 @@ func _ready():
 func startGame():
 	var card = preload(card_scene)
 	for i in range(hand_size):
+		var randomNumber = randi() % (deck.size())
+		print(randomNumber)
 		var new_card = card.instantiate()
+		new_card.name = deck[randomNumber]
+		var cardImagePath = str("res://Cards/" + new_card.name + ".png")
+		print(cardImagePath)
+		new_card.get_node("CardImage").texture = load(cardImagePath)
+		deck.erase(randomNumber)
 		$"../CardManager".add_child(new_card)
-		new_card.name = "Card"
 		add_card_to_hand(new_card)	
 		
 func add_card_to_hand(card):

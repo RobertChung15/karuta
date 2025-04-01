@@ -1,5 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dtgnj01ybrpo0"]
 
+[ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Deck.png" id="1_fs7fm"]
 [ext_resource type="Texture2D" uid="uid://cp7k4mxvhtwy6" path="res://Cards/cardsprite.png" id="1_iegkh"]
 
 [sub_resource type="GDScript" id="GDScript_rgs8r"]
@@ -89,9 +90,6 @@ func highlight_card(card, hovered):
 	
 "
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4fq6j"]
-size = Vector2(265.746, 342.649)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kokau"]
 size = Vector2(229, 294)
 
@@ -100,19 +98,15 @@ position = Vector2(2, 0)
 scale = Vector2(0.411288, 0.408691)
 script = SubResource("GDScript_rgs8r")
 
+[node name="CardBack" type="Sprite2D" parent="."]
+scale = Vector2(1, 1)
+texture = ExtResource("1_fs7fm")
+
 [node name="CardImage" type="Sprite2D" parent="."]
 position = Vector2(-101, -128)
 scale = Vector2(0.382279, 0.421185)
 texture = ExtResource("1_iegkh")
 centered = false
-
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2(93, -149)
-scale = Vector2(0.810472, 0.911323)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2(-122.873, 161.325)
-shape = SubResource("RectangleShape2D_4fq6j")
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(93, -149)
@@ -121,6 +115,8 @@ scale = Vector2(0.810472, 0.911323)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-127.5, 168)
 shape = SubResource("RectangleShape2D_kokau")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
