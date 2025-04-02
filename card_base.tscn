@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtgnj01ybrpo0"]
+[gd_scene load_steps=8 format=3 uid="uid://dtgnj01ybrpo0"]
 
 [ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Deck.png" id="1_fs7fm"]
 [ext_resource type="Texture2D" uid="uid://cp7k4mxvhtwy6" path="res://Cards/cardsprite.png" id="1_iegkh"]
@@ -37,6 +37,7 @@ func _input(event: InputEvent) -> void:
 			var clicked_objects_drag = get_tree().get_nodes_in_group(\"draggable\")
 			var clicked_objects_throw = get_tree().get_nodes_in_group(\"inPlay\")
 			var mouse_pos = get_global_mouse_position()
+			startingPosition = position
 			if(clicked_objects_drag.size() > 0):
 				for obj in clicked_objects_drag:
 					if get_global_mouse_position().distance_to(position) < 50:
@@ -45,28 +46,38 @@ func _input(event: InputEvent) -> void:
 			elif(clicked_objects_throw.size() > 0):
 				for obj in clicked_objects_throw:
 					move_in_random_direction()
-		else:
+		elif(Input.is_action_just_released(\"leftClick\")):
 			dragging = false
 			checkForSlot()
+			
+
 	if dragging:
 		position = get_global_mouse_position() + offset
 		
 		
 func checkForSlot():
 	var areas = $Area2D.get_overlapping_areas()
-	if(areas.size() == 0):
-		playerHandRef.animation_card_to_position(self, startingPosition)
+	var placedInSlot = false
 	for area in areas:
 		if area.get_parent().is_in_group(\"card_slots\"):
 			position = area.get_parent().position
 			area.get_parent().hasCard = true
+			placedInSlot = true
 			remove_from_group(\"inHand\")
 			add_to_group(\"inPlay\")
 			playerHandRef.remove_card_from_hand(self)
 			remove_from_group(\"draggable\")
 			add_to_group(\"inPlay\")
 			isInSlot = true;
-			
+			break
+	if not placedInSlot:
+		returnToHand()
+
+func returnToHand():
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, \"position\", startingPosition, 0.3)
+	add_to_group(\"draggable\")
+		
 func move_in_random_direction():
 	var random_angle = randf() * 2 * PI
 	var impulse = Vector2(cos(random_angle), sin(random_angle)) * 200
@@ -91,7 +102,163 @@ func highlight_card(card, hovered):
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kokau"]
-size = Vector2(229, 294)
+size = Vector2(229, 295.539)
+
+[sub_resource type="Animation" id="Animation_d83gn"]
+resource_name = "flip"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardBack:z_index")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardBack:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1.05382, 1.0263), Vector2(0.330939, 1.0263)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardImage:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.130612, 0.420004), Vector2(0.381788, 0.420004)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardImage:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [-1, 0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardBack:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-2.43139, 3.48483)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardImage:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-31.608, -127.235), Vector2(-102.118, -127.235)]
+}
+
+[sub_resource type="Animation" id="Animation_yhrrj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardBack:z_index")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardBack:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.05382, 1.0263)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardImage:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.11)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardImage:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardBack:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-2.43139, 3.48483)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardImage:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-19.4511, -127.235)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n5q5k"]
+_data = {
+"RESET": SubResource("Animation_yhrrj"),
+"flip": SubResource("Animation_d83gn")
+}
 
 [node name="CardBase" type="Node2D"]
 position = Vector2(2, 0)
@@ -99,12 +266,14 @@ scale = Vector2(0.411288, 0.408691)
 script = SubResource("GDScript_rgs8r")
 
 [node name="CardBack" type="Sprite2D" parent="."]
-scale = Vector2(1, 1)
+position = Vector2(-2.43139, 3.48483)
+scale = Vector2(1.05382, 1.0263)
 texture = ExtResource("1_fs7fm")
 
 [node name="CardImage" type="Sprite2D" parent="."]
-position = Vector2(-101, -128)
-scale = Vector2(0.382279, 0.421185)
+z_index = -1
+position = Vector2(-19.4511, -127.235)
+scale = Vector2(0.1, 0.11)
 texture = ExtResource("1_iegkh")
 centered = false
 
@@ -113,10 +282,13 @@ position = Vector2(93, -149)
 scale = Vector2(0.810472, 0.911323)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-127.5, 168)
+position = Vector2(-127.5, 168.77)
 shape = SubResource("RectangleShape2D_kokau")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_n5q5k")
+}
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
