@@ -8,6 +8,7 @@ script/source = "extends Node2D
 
 var card_being_dragged: Node2D = null
 var screen_size: Vector2
+var screen_center: Vector2
 var dragging = false
 var offset = Vector2()
 var startingPosition
@@ -19,6 +20,7 @@ signal hovered_off
 
 func _ready() -> void:
 	screen_size = get_viewport().size
+	screen_center = get_viewport().size / 2
 	playerHandRef = $\"../../PlayerHand\"
 	rb = $RigidBody2D
 	add_to_group(\"draggable\")
@@ -30,39 +32,41 @@ func _process(_delta: float) -> void:
 		position = get_global_mouse_position() + offset
 	
 
-
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if(Input.is_action_just_pressed(\"leftClick\")):
+		if Input.is_action_just_pressed(\"leftClick\"):
 			var clicked_objects_drag = get_tree().get_nodes_in_group(\"draggable\")
 			var clicked_objects_throw = get_tree().get_nodes_in_group(\"inPlay\")
 			var mouse_pos = get_global_mouse_position()
 			startingPosition = position
-			if(clicked_objects_drag.size() > 0):
+			
+			if clicked_objects_drag.size() > 0:
 				for obj in clicked_objects_drag:
 					if get_global_mouse_position().distance_to(position) < 50:
-						dragging = true
-						offset = position - get_global_mouse_position()
-			elif(clicked_objects_throw.size() > 0):
+						if not isInSlot:
+							dragging = true
+							offset = position - get_global_mouse_position()
+							break  # Break after starting drag
+			elif clicked_objects_throw.size() > 0:
 				for obj in clicked_objects_throw:
 					move_in_random_direction()
-		elif(Input.is_action_just_released(\"leftClick\")):
+		elif Input.is_action_just_released(\"leftClick\"):
 			dragging = false
-			checkForSlot()
+			if not isInSlot:
+				checkForSlot()
+			else:
+				checkCard()
 			
-
-	if dragging:
+	if dragging and is_in_group(\"draggable\"):  # Check if still in draggable group
 		position = get_global_mouse_position() + offset
 		
 		
 func checkForSlot():
 	var areas = $Area2D.get_overlapping_areas()
-	var placedInSlot = false
 	for area in areas:
 		if area.get_parent().is_in_group(\"card_slots\"):
 			position = area.get_parent().position
 			area.get_parent().hasCard = true
-			placedInSlot = true
 			remove_from_group(\"inHand\")
 			add_to_group(\"inPlay\")
 			playerHandRef.remove_card_from_hand(self)
@@ -70,8 +74,13 @@ func checkForSlot():
 			add_to_group(\"inPlay\")
 			isInSlot = true;
 			break
-	if not placedInSlot:
+	if not isInSlot:
 		returnToHand()
+		
+func checkCard():
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, \"position\", screen_center, 0.3)
+	pass
 
 func returnToHand():
 	var tween = get_tree().create_tween()

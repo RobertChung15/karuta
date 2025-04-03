@@ -20,9 +20,8 @@ func startGame():
 		var new_card = card.instantiate()
 		new_card.name = deck[randomNumber]
 		var cardImagePath = str("res://Cards/" + new_card.name + ".png")
-		print(cardImagePath)
 		new_card.get_node("CardImage").texture = load(cardImagePath)
-		deck.erase(randomNumber)
+		deck.erase(deck[randomNumber])
 		$"../CardManager".add_child(new_card)
 		add_card_to_hand(new_card)	
 		new_card.get_node("AnimationPlayer").play("flip")
