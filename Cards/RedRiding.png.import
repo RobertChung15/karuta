@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d07wa8uyac3oy"
-path="res://.godot/imported/two.png-646dc846b7d9f267521d67f1f2729ad0.ctex"
+uid="uid://cgshdslxblhun"
+path="res://.godot/imported/RedRiding.png-b9a9e28e5719544284a6a1ee78dcb323.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Cards/two.png"
-dest_files=["res://.godot/imported/two.png-646dc846b7d9f267521d67f1f2729ad0.ctex"]
+source_file="res://Cards/RedRiding.png"
+dest_files=["res://.godot/imported/RedRiding.png-b9a9e28e5719544284a6a1ee78dcb323.ctex"]
 
 [params]
 

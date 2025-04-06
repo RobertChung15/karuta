@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwl1edv8hu5bu"
-path="res://.godot/imported/four.png-37e051c1bdc680ce145871cd4efb628d.ctex"
+uid="uid://da7qtp4caqje2"
+path="res://.godot/imported/HumptyDumpty.png-41c55c8ad80e685552b1acc58db6b54b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Cards/four.png"
-dest_files=["res://.godot/imported/four.png-37e051c1bdc680ce145871cd4efb628d.ctex"]
+source_file="res://Cards/HumptyDumpty.png"
+dest_files=["res://.godot/imported/HumptyDumpty.png-41c55c8ad80e685552b1acc58db6b54b.ctex"]
 
 [params]
 

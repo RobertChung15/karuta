@@ -1,31 +1,38 @@
 extends Node2D
 
 const hand_size = 4
-const card_scene = "res://card_base.tscn"
+const card_scene = "res://Scenes/card_base.tscn"
 const card_width = 100
 var playerHand = []
 var centre_screen_x
 var hand_y_position = 590
 var player_hand_reference
-var deck = ["one", "two", "three", "four"]
+var deck = [{"name": "Bo Peep", "image": "BoPeep"}, 
+{"name": "Humpty Dumpty", "image": "HumptyDumpty"}, 
+{"name": "Red Riding Hood", "image": "RedRiding"}, 
+{"name": "Three Little Pigs", "image": "threelittlepigs"}]
+var cardManager
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	centre_screen_x = get_viewport().size.x / 2
+	cardManager = $"../CardManager"
 
 func startGame():
 	var card = preload(card_scene)
 	for i in range(hand_size):
 		var randomNumber = randi() % (deck.size())
 		var new_card = card.instantiate()
-		new_card.name = deck[randomNumber]
-		var cardImagePath = str("res://Cards/" + new_card.name + ".png")
-		new_card.get_node("CardImage").texture = load(cardImagePath)
+		new_card.name = deck[randomNumber]["name"]
+		cardManager.addToCardPool(new_card.name)
+		var image = deck[randomNumber]["image"]
+		var cardImagePath = str("res://Cards/" + image + ".png")
 		deck.erase(deck[randomNumber])
+		new_card.get_node("CardImage").texture = load(cardImagePath)
 		$"../CardManager".add_child(new_card)
 		add_card_to_hand(new_card)	
 		new_card.get_node("AnimationPlayer").play("flip")
-		
+	
 func add_card_to_hand(card):
 	if card not in playerHand:
 		playerHand.insert(0, card)
