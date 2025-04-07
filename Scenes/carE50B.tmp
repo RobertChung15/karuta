@@ -34,11 +34,11 @@ func _process(_delta: float) -> void:
 	
 
 func _input(event: InputEvent) -> void:
-	var mouse_pos = get_global_mouse_position()
-	var clicked_objects_inPlay = get_tree().get_nodes_in_group(\"inPlay\")
 	if event is InputEventMouseButton:
 		if Input.is_action_just_pressed(\"leftClick\"):
 			var clicked_objects_drag = get_tree().get_nodes_in_group(\"draggable\")
+			var clicked_objects_inPlay = get_tree().get_nodes_in_group(\"inPlay\")
+			var mouse_pos = get_global_mouse_position()
 			startingPosition = position
 			if clicked_objects_drag.size() > 0:
 				for obj in clicked_objects_drag:
@@ -52,8 +52,6 @@ func _input(event: InputEvent) -> void:
 					if get_global_mouse_position().distance_to(position) < 50:
 						if isInSlot:
 							checking = true
-					if self.position.distance_to(obj.position) < 100:
-						print(obj)
 		elif Input.is_action_just_released(\"leftClick\"):
 			dragging = false
 			checking = false
@@ -63,8 +61,8 @@ func _input(event: InputEvent) -> void:
 		position = get_global_mouse_position() + offset
 	if checking and is_in_group(\"inPlay\"):
 		if cardManager.cardname == self.name:
-			pass
-			#moveCardToCenter()
+			moveCardToCenter()
+	
 		
 func checkForSlot():
 	var areas = $Area2D.get_overlapping_areas()

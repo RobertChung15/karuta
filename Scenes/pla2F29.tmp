@@ -1,0 +1,83 @@
+[gd_scene load_steps=8 format=3 uid="uid://b3f7sgdq0vcus"]
+
+[ext_resource type="Texture2D" uid="uid://d1nw05mqcxk31" path="res://Cards/background.jpg" id="1_d6pml"]
+[ext_resource type="Script" path="res://Scenes/card_manager.gd" id="1_qo355"]
+[ext_resource type="Script" path="res://Scenes/PlayerHand.gd" id="2_6wkpr"]
+[ext_resource type="Script" path="res://Scenes/deck.gd" id="4_ypetm"]
+[ext_resource type="PackedScene" uid="uid://cdi57ij2t13pr" path="res://Scenes/card_slot.tscn" id="5_w00en"]
+[ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Cards/Deck.png" id="7_kj8w7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1lfed"]
+size = Vector2(141.152, 237.638)
+
+[node name="PlaySpace" type="Node2D"]
+
+[node name="CardManager" type="Node" parent="."]
+script = ExtResource("1_qo355")
+
+[node name="Timer" type="Timer" parent="CardManager"]
+one_shot = true
+
+[node name="Cards" type="Node" parent="."]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(1500, 1001)
+texture = ExtResource("1_d6pml")
+
+[node name="PlayerHand" type="Node2D" parent="."]
+position = Vector2(583, 518)
+script = ExtResource("2_6wkpr")
+
+[node name="Deck" type="Node2D" parent="."]
+position = Vector2(99, 565)
+scale = Vector2(0.630525, 0.563883)
+script = ExtResource("4_ypetm")
+
+[node name="Area2D" type="Area2D" parent="Deck"]
+position = Vector2(4.57764e-05, 1.77344)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
+position = Vector2(2.37898, -3.54683)
+shape = SubResource("RectangleShape2D_1lfed")
+
+[node name="Sprite2D" type="Sprite2D" parent="Deck"]
+position = Vector2(1.586, -5.32025)
+scale = Vector2(0.76433, 0.901529)
+texture = ExtResource("7_kj8w7")
+
+[node name="CardSlots" type="Node" parent="."]
+
+[node name="CardSlot" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(91, 190)
+
+[node name="CardSlot2" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(222, 189)
+
+[node name="CardSlot3" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(92, 326)
+
+[node name="CardSlot4" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(222, 326)
+
+[node name="CardSlot5" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(814, 180)
+
+[node name="CardSlot6" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(813, 333)
+
+[node name="CardSlot7" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(963, 178)
+
+[node name="CardSlot8" parent="CardSlots" instance=ExtResource("5_w00en")]
+position = Vector2(961, 333)
+
+[node name="DisplayText" type="Label" parent="."]
+modulate = Color(0.129558, 0.129558, 0.129558, 1)
+offset_left = 393.0
+offset_top = 23.0
+offset_right = 600.0
+offset_bottom = 46.0
+text = "Hello"
+
+[connection signal="timeout" from="CardManager/Timer" to="CardManager" method="_on_timer_timeout"]
+[connection signal="input_event" from="Deck/Area2D" to="Deck" method="_on_area_2d_input_event"]

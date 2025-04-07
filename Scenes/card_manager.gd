@@ -27,14 +27,14 @@ func removeCardFromPool(cardname: String) -> void:
 
 func playGame() -> void:
 	start = true;
-	cardname = pickRandomCard()
-	removeCardFromPool(cardname)
 	timer.start()
 
 func _on_timer_timeout() -> void:
 	countdownTime -= 1
 	displayText.text = str(countdownTime)
 	if(countdownTime <= 0):
+		cardname = pickRandomCard()
+		removeCardFromPool(cardname)
 		displayText.text = cardname
 		timer.stop()
 	else:
