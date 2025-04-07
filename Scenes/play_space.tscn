@@ -24,10 +24,6 @@ one_shot = true
 position = Vector2(1500, 1001)
 texture = ExtResource("1_d6pml")
 
-[node name="PlayerHand" type="Node2D" parent="."]
-position = Vector2(583, 518)
-script = ExtResource("2_6wkpr")
-
 [node name="Deck" type="Node2D" parent="."]
 position = Vector2(99, 565)
 scale = Vector2(0.630525, 0.563883)
@@ -70,6 +66,10 @@ position = Vector2(963, 178)
 
 [node name="CardSlot8" parent="CardSlots" instance=ExtResource("5_w00en")]
 position = Vector2(961, 333)
+
+[node name="PlayerHand" type="Node2D" parent="."]
+position = Vector2(583, 518)
+script = ExtResource("2_6wkpr")
 
 [node name="DisplayText" type="Label" parent="."]
 modulate = Color(0.129558, 0.129558, 0.129558, 1)

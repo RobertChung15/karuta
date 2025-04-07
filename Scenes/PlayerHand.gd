@@ -31,7 +31,7 @@ func startGame():
 		new_card.get_node("CardImage").texture = load(cardImagePath)
 		$"../CardManager".add_child(new_card)
 		add_card_to_hand(new_card)	
-		new_card.get_node("AnimationPlayer").play("flip")
+		#new_card.get_node("AnimationPlayer").play("flip")
 	
 func add_card_to_hand(card):
 	if card not in playerHand:
