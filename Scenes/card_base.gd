@@ -9,12 +9,13 @@ var startingPosition
 var playerHandRef
 var cardManager
 var isInSlot = false
+var removeCard = false
 signal hovered
 signal hovered_off
 
 func _ready() -> void:
-	screen_size = get_viewport().size
-	screen_center = get_viewport().size / 2
+	screen_size = get_viewport().get_visible_rect().size
+	screen_center = get_viewport().get_visible_rect().size / 2
 	playerHandRef = $"../../PlayerHand"
 	cardManager = $"../../CardManager"
 	add_to_group("draggable")
@@ -23,24 +24,24 @@ func _ready() -> void:
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	var mouse_pos = get_global_mouse_position()
 	if event is InputEventMouseButton:
-			if(Input.is_action_just_pressed("leftClick")):
-				startingPosition = position
-				if not isInSlot:
-					dragging = true
-					offset = position - get_global_mouse_position()
-				elif isInSlot:
-					checking = true
-			elif(Input.is_action_just_released("leftClick")):
-				dragging = false
-				checking = false
-				if not isInSlot:
-					checkForSlot()
-	if dragging and is_in_group("draggable"):
-		position = get_global_mouse_position() + offset
-	if checking and is_in_group("inPlay"):
-		if cardManager.cardname == self.name:
-			checkNearbyCards()
-			#moveCardToCenter()
+		if(Input.is_action_just_pressed("leftClick")):
+			startingPosition = position
+			if not isInSlot:
+				dragging = true
+				offset = position - get_global_mouse_position()
+			elif isInSlot:
+				checking = true
+		elif(Input.is_action_just_released("leftClick")):
+			dragging = false
+			checking = false
+			if not isInSlot:
+				checkForSlot()
+		if dragging and is_in_group("draggable"):
+			position = get_global_mouse_position() + offset
+		if checking and is_in_group("inPlay"):
+			if cardManager.cardname == self.name:
+				removeCard = true
+				checkNearbyCards()
 
 func _process(_delta: float) -> void:
 	if dragging:
@@ -53,8 +54,29 @@ func checkNearbyCards():
 			impulseCard(obj)
 	
 func impulseCard(obj):
-	obj.position += Vector2(10, 10)
-	pass
+	var mouse_pos = get_global_mouse_position()
+	var direction = (obj.position - mouse_pos).normalized()
+	var distance = 50
+	var rotation_angle = randf_range(-30, 30)
+	var original_position = obj.position
+	#move card to position
+	var tween = get_tree().create_tween()
+	var endPosition = obj.position + (direction * distance)
+	tween.tween_property(obj, "position", endPosition, 0.1)
+	tween.tween_property(obj, "rotation", deg_to_rad(rotation_angle), 0.05)
+	var timer: Timer = obj.get_node("Timer")
+	timer.timeout.connect(resetPosition.bind(obj, original_position))
+	timer.start()
+
+func resetPosition(obj, original_position):
+	if obj.removeCard:
+		moveCardToCenter()
+		cardManager.callJudge()
+	else:
+		var tween = get_tree().create_tween()
+		tween.tween_property(obj, "position", original_position, 0.1)
+		tween.tween_property(obj, "rotation", 0, 0.1)
+	
 func checkForSlot():
 	var areas = $Area2D.get_overlapping_areas()
 	for area in areas:
@@ -74,9 +96,12 @@ func checkForSlot():
 		returnToHand()
 		
 func moveCardToCenter():
+	self.z_index = 2
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "position", screen_center, 0.3)
-	pass
+	tween.tween_property(self, "rotation", 0, 0.05)
+	tween.tween_property(self, "scale", Vector2(1, 1), 0.1)
+	
 
 func returnToHand():
 	var tween = get_tree().create_tween()

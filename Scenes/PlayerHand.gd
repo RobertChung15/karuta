@@ -5,7 +5,7 @@ const card_scene = "res://Scenes/card_base.tscn"
 const card_width = 100
 var playerHand = []
 var centre_screen_x
-var hand_y_position = 590
+var hand_y_position
 var player_hand_reference
 var deck = [{"name": "Bo Peep", "image": "BoPeep"}, 
 {"name": "Humpty Dumpty", "image": "HumptyDumpty"}, 
@@ -13,9 +13,10 @@ var deck = [{"name": "Bo Peep", "image": "BoPeep"},
 {"name": "Three Little Pigs", "image": "threelittlepigs"}]
 var cardManager
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	centre_screen_x = get_viewport().size.x / 2
+	var visible_rect = get_viewport().get_visible_rect()
+	centre_screen_x = visible_rect.position.x + (visible_rect.size.x / 2)
+	hand_y_position = get_viewport().size.y / 2
 	cardManager = $"../CardManager"
 
 func startGame():
@@ -31,7 +32,7 @@ func startGame():
 		new_card.get_node("CardImage").texture = load(cardImagePath)
 		$"../CardManager".add_child(new_card)
 		add_card_to_hand(new_card)	
-		#new_card.get_node("AnimationPlayer").play("flip")
+		new_card.get_node("AnimationPlayer").play("flip")
 	
 func add_card_to_hand(card):
 	if card not in playerHand:
