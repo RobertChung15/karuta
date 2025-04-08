@@ -7,13 +7,16 @@ var countdownTime: int = 0
 var cardname
 var start = false;
 var color_rect: ColorRect
+var shader_material: ShaderMaterial
+var shader_active: bool = false
 
 func _ready() -> void:
 	color_rect = $"../ColorRect"
 	color_rect.size = get_viewport().get_visible_rect().size
-	#color_rect.color = Color(0, 0, 0, 0)
-	color_rect.color = Color.mix
 	color_rect.z_index = 1
+	shader_material = color_rect.material
+	color_rect.modulate.a = 0
+	shader_material.set_shader_parameter("opacity", 0.0)
 	displayText = $"../DisplayText"
 	displayText.text = "2"
 	timer =  $Timer
@@ -38,12 +41,17 @@ func playGame() -> void:
 func callJudge() -> void:
 	displayText.text = "Correct Card"
 	var tween = get_tree().create_tween()
-	tween.tween_property(color_rect, "color", Color(0, 0, 0, 0.5), 0.5)
+	tween.tween_property(color_rect, "modulate:a", 1, 0.3)
+	shader_material.set_shader_parameter("opacity", 1.0)
+	color_rect.modulate.a = 255
 	timer.connect("timeout", returnToNormal)
+	timer.start();
+	timer.one_shot = true;
 	
 func returnToNormal() -> void:
 	var tween = get_tree().create_tween()
-	tween.tween_property(color_rect, "color", Color(0, 0, 0, 0), 0.5)
+	tween.tween_property(color_rect, "modulate:a", 0, 0.3)
+	shader_material.set_shader_parameter("opacity", 0.0)
 	
 func _on_timer_timeout() -> void:
 	countdownTime -= 1
