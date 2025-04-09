@@ -64,6 +64,7 @@ func impulseCard(obj):
 	var endPosition = obj.position + (direction * distance)
 	tween.tween_property(obj, "position", endPosition, 0.1)
 	tween.tween_property(obj, "rotation", deg_to_rad(rotation_angle), 0.05)
+	cardManager.pauseTime()
 	var timer: Timer = obj.get_node("Timer")
 	timer.timeout.connect(resetPosition.bind(obj, original_position))
 	timer.start()
@@ -101,6 +102,7 @@ func moveCardToCenter():
 	tween.tween_property(self, "position", screen_center, 0.3)
 	tween.tween_property(self, "rotation", 0, 0.05)
 	tween.tween_property(self, "scale", Vector2(1, 1), 0.1)
+	$AnimationPlayer.play("selected")
 	
 
 func returnToHand():

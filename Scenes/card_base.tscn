@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://dmao0l8w0t684"]
+[gd_scene load_steps=10 format=3 uid="uid://dmao0l8w0t684"]
 
 [ext_resource type="Script" path="res://Scenes/card_base.gd" id="1_c6dht"]
 [ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Cards/Deck.png" id="1_fs7fm"]
 [ext_resource type="Texture2D" uid="uid://rfwp5vey4j34" path="res://Cards/BoPeep.png" id="2_o8qou"]
+[ext_resource type="Texture2D" uid="uid://cffddp8uu7pol" path="res://Cards/circle.png" id="2_x2qdn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kokau"]
-size = Vector2(251.997, 295.342)
+size = Vector2(248.997, 295.342)
 
 [sub_resource type="Animation" id="Animation_yhrrj"]
 length = 0.001
@@ -80,6 +81,42 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Circle:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Circle:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 0.97)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Circle:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.0156863)]
 }
 
 [sub_resource type="Animation" id="Animation_d83gn"]
@@ -157,16 +194,64 @@ tracks/5/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_o4xto"]
+resource_name = "selected"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Circle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Circle:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.097), Vector2(1, 0.97), Vector2(1.3, 1.261)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Circle:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.0156863)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n5q5k"]
 _data = {
 "RESET": SubResource("Animation_yhrrj"),
-"flip": SubResource("Animation_d83gn")
+"flip": SubResource("Animation_d83gn"),
+"selected": SubResource("Animation_o4xto")
 }
 
 [node name="CardBase" type="Node2D"]
 position = Vector2(2, 0)
 scale = Vector2(0.411288, 0.408691)
 script = ExtResource("1_c6dht")
+
+[node name="Circle" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.0156863)
+position = Vector2(-2.43138, -3.05176e-05)
+scale = Vector2(1, 0.97)
+texture = ExtResource("2_x2qdn")
 
 [node name="CardBack" type="Sprite2D" parent="."]
 position = Vector2(-3.64708, 3.48483)
@@ -184,7 +269,7 @@ position = Vector2(93, -149)
 scale = Vector2(0.810472, 0.911323)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-120.748, 166.184)
+position = Vector2(-119.248, 166.184)
 shape = SubResource("RectangleShape2D_kokau")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

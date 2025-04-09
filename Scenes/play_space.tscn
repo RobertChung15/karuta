@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b3f7sgdq0vcus"]
+[gd_scene load_steps=12 format=3 uid="uid://b3f7sgdq0vcus"]
 
 [ext_resource type="Texture2D" uid="uid://d1nw05mqcxk31" path="res://Cards/background.jpg" id="1_d6pml"]
 [ext_resource type="Script" path="res://Scenes/card_manager.gd" id="1_qo355"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scenes/deck.gd" id="4_ypetm"]
 [ext_resource type="PackedScene" uid="uid://cdi57ij2t13pr" path="res://Scenes/card_slot.tscn" id="5_w00en"]
 [ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Cards/Deck.png" id="7_kj8w7"]
+[ext_resource type="Script" path="res://Scenes/stopwatch.gd" id="9_qe662"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3ostw"]
 shader = ExtResource("2_1c3mb")
@@ -89,11 +90,31 @@ script = ExtResource("2_6wkpr")
 
 [node name="DisplayText" type="Label" parent="."]
 modulate = Color(0.129558, 0.129558, 0.129558, 1)
-offset_left = 393.0
-offset_top = 23.0
-offset_right = 600.0
-offset_bottom = 46.0
+offset_left = 437.0
+offset_top = 20.0
+offset_right = 593.0
+offset_bottom = 103.0
+theme_override_font_sizes/font_size = 60
 text = "Hello"
+
+[node name="timeText" type="Label" parent="."]
+offset_left = 456.0
+offset_top = 561.0
+offset_right = 563.0
+offset_bottom = 616.0
+theme_override_font_sizes/font_size = 40
+text = "Time"
+
+[node name="time" type="Label" parent="."]
+offset_left = 454.0
+offset_top = 625.0
+offset_right = 563.0
+offset_bottom = 680.0
+theme_override_font_sizes/font_size = 40
+text = "2.552"
+
+[node name="stopwatch" type="Node" parent="."]
+script = ExtResource("9_qe662")
 
 [connection signal="timeout" from="CardManager/Timer" to="CardManager" method="_on_timer_timeout"]
 [connection signal="input_event" from="Deck/Area2D" to="Deck" method="_on_area_2d_input_event"]
