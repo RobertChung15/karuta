@@ -3,9 +3,8 @@ extends Node2D
 var hasCard = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	add_to_group("card_slots")
+	add_to_group("card_slot_empty")
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
+func fillCardSlot():
+	add_to_group("card_slot")
+	remove_from_group("card_slot_empty")

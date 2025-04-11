@@ -1,5 +1,6 @@
 extends Node
 var cardpool = []
+var cardTime = []
 var displayText: Label
 var timeText: Label
 var time: Label
@@ -11,8 +12,10 @@ var color_rect: ColorRect
 var shader_material: ShaderMaterial
 var shader_active: bool = false
 var stopwatch: Stopwatch
+var playerHand
 
 func _ready() -> void:
+	playerHand = $"../PlayerHand"
 	color_rect = $"../ColorRect"
 	color_rect.size = get_viewport().get_visible_rect().size
 	color_rect.z_index = 1
@@ -21,10 +24,16 @@ func _ready() -> void:
 	shader_material.set_shader_parameter("opacity", 0.0)
 	displayText = $"../DisplayText"
 	displayText.text = "2"
+	displayText.visible = false
+	displayText.position.x = (get_viewport().get_visible_rect().size.x - displayText.size.x) / 2
 	timeText = $"../timeText"
 	timeText.visible = false
+	timeText.position.x = (get_viewport().get_visible_rect().size.x - timeText.size.x) / 2
+	timeText.position.y = (4* (get_viewport().get_visible_rect().size.y - timeText.size.y)) / 5
 	time = $"../time"
 	time.visible = false
+	time.position.x = ((get_viewport().get_visible_rect().size.x - time.size.x) / 2) - 50
+	time.position.y = (9 * (get_viewport().get_visible_rect().size.y - time.size.y)) / 10
 	timer =  $Timer
 	stopwatch = $"../stopwatch"
 	
@@ -42,6 +51,7 @@ func removeCardFromPool(cardname: String) -> void:
 
 func playGame() -> void:
 	start = true;
+	displayText.visible = true
 	timer.start()
 	
 func callJudge() -> void:
@@ -62,26 +72,31 @@ func callJudge() -> void:
 	newTimer.start();
 	
 func returnToNormal() -> void:
-	var tween = get_tree().create_tween()
-	tween.tween_property(color_rect, "modulate:a", 0, 0.3)
-	shader_material.set_shader_parameter("opacity", 0.0)
 	self.get_node(cardname).queue_free()
-	displayText.visible = false
 	timeText.visible = false
 	timeText.z_index = 2
 	time.visible = false
 	time.z_index = 2
 	countdownTime = 3
-	timer.start();
+	if(cardpool.size() > 0):
+		var tween = get_tree().create_tween()
+		tween.tween_property(color_rect, "modulate:a", 0, 0.3)
+		shader_material.set_shader_parameter("opacity", 0.0)
+		timer.start();
+	elif(cardpool.size() == 0):
+		displayText.visible = false
+		endScreen()
 	
 func _on_timer_timeout() -> void:
 	countdownTime -= 1
 	displayText.text = str(countdownTime)
 	if(countdownTime <= 0):
-		cardname = pickRandomCard()
-		stopwatch.stopped = false
-		removeCardFromPool(cardname)
-		displayText.text = cardname
+		if(cardpool.size() > 0):
+			cardname = pickRandomCard()
+			removeCardFromPool(cardname)
+			stopwatch.reset()
+			stopwatch.stopped = false
+			displayText.text = cardname
 		timer.stop()
 	else:
 		timer.start()
@@ -89,4 +104,31 @@ func _on_timer_timeout() -> void:
 func pauseTime() -> void:
 	stopwatch.stopped = true
 	time.text = stopwatch.time_to_string()
+	cardTime.append(stopwatch.time_to_string().replace("sec", ""))
+	
+func returnCards() -> void:
+	var cards = get_tree().get_nodes_in_group("inPlay")
+	var cardslot = get_tree().get_nodes_in_group("card_slot")
+	for card in cards:
+		playerHand.add_card_to_hand(card)
+		card.checking = false
+		card.isInSlot = false
+		card.remove_from_group("inPlay")
+		card.add_to_group("draggable")
+	for slot in cardslot:
+		slot.add_to_group("card_slot_empty")
+	
+
+func endScreen() -> void:
+	var totalTime= 0
+	for time in cardTime:
+		totalTime += time.to_float()
+		
+	var averageTime = totalTime / cardTime.size()
+	$"../averageTime".text = "Average Time" + str(averageTime) + "sec"
+	$"../averageTime".visible = true
+	$"../averageTime".z_index = 2
+	shader_material.set_shader_parameter("opacity", 1.0)
+	$"../endText".visible = true
+	$"../endText".z_index = 2
 	

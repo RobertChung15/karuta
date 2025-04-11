@@ -81,9 +81,9 @@ func resetPosition(obj, original_position):
 func checkForSlot():
 	var areas = $Area2D.get_overlapping_areas()
 	for area in areas:
-		if area.get_parent().is_in_group("card_slots"):
+		if area.get_parent().is_in_group("card_slot_empty"):
 			position = area.get_parent().position
-			area.get_parent().hasCard = true
+			area.get_parent().fillCardSlot()
 			remove_from_group("inHand")
 			add_to_group("inPlay")
 			playerHandRef.remove_card_from_hand(self)
@@ -92,7 +92,7 @@ func checkForSlot():
 			isInSlot = true;
 			if playerHandRef.playerHand.size() == 0:
 				cardManager.playGame()
-			break
+		break
 	if not isInSlot:
 		returnToHand()
 		
