@@ -28,6 +28,9 @@ func startGame():
 	displayText.text = ""
 	endText.visible = false
 	averageTime.visible = false
+	var visible_rect = get_viewport().get_visible_rect()
+	averageTime.position.x = visible_rect.position.x + (visible_rect.size.x / 2) - 100
+	averageTime.position.y = visible_rect.position.y + (visible_rect.size.y / 2)
 	var card = preload(card_scene)
 	for i in range(hand_size):
 		var randomNumber = randi() % (deck.size())

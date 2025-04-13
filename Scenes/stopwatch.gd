@@ -14,6 +14,6 @@ func reset():
 func time_to_string() -> String:
 	var msec = fmod(time, 1) * 1000
 	var sec = fmod(time, 60)
-	var format_string = "%2d.%2d" + "sec"
+	var format_string = "%2d.%2d" + "s"
 	var actual_string = format_string % [sec, msec]
 	return actual_string

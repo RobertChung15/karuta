@@ -1,0 +1,134 @@
+[gd_scene load_steps=9 format=3 uid="uid://ljhitg1khbk"]
+
+[ext_resource type="Script" path="res://Scenes/play_space.gd" id="1_bk1ov"]
+[ext_resource type="Shader" path="res://Scenes/play_space.gdshader" id="2_pv8kf"]
+[ext_resource type="Texture2D" uid="uid://dh6qp40mxftx5" path="res://Cards/tatami3.jpg" id="3_olrg6"]
+[ext_resource type="PackedScene" uid="uid://cdi57ij2t13pr" path="res://Scenes/card_slot.tscn" id="7_84uwg"]
+[ext_resource type="Script" path="res://Scenes/PlayerHand.gd" id="8_3tt8m"]
+[ext_resource type="Script" path="res://Scenes/stopwatch.gd" id="9_k6k84"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_312an"]
+shader = ExtResource("2_pv8kf")
+shader_parameter/opacity = null
+
+[sub_resource type="GDScript" id="GDScript_ss4m2"]
+
+[node name="OpponentPlayerSpace" type="Node2D"]
+script = ExtResource("1_bk1ov")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color(0.783523, 0.783523, 0.783523, 1)
+z_index = 1
+material = SubResource("ShaderMaterial_312an")
+offset_right = 1081.0
+offset_bottom = 722.0
+mouse_filter = 2
+color = Color(0.294118, 0.313726, 0.25098, 0)
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(557, 378)
+scale = Vector2(0.17442, 0.163274)
+texture = ExtResource("3_olrg6")
+
+[node name="CardManager" type="Node" parent="."]
+
+[node name="Timer" type="Timer" parent="CardManager"]
+one_shot = true
+
+[node name="Cards" type="Node" parent="."]
+
+[node name="CardSlots" type="Node" parent="."]
+
+[node name="CardSlot" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(100, 100)
+
+[node name="CardSlot2" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(250, 100)
+
+[node name="CardSlot3" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(100, 250)
+
+[node name="CardSlot4" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(250, 250)
+
+[node name="CardSlot5" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(800, 100)
+
+[node name="CardSlot6" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(800, 250)
+
+[node name="CardSlot7" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(950, 100)
+
+[node name="CardSlot8" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(950, 250)
+
+[node name="PlayerHand" type="Node2D" parent="."]
+position = Vector2(583, 518)
+script = ExtResource("8_3tt8m")
+
+[node name="DisplayText" type="Label" parent="."]
+visible = false
+modulate = Color(0.129558, 0.129558, 0.129558, 1)
+z_index = 2
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 83.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 60
+text = "Hello"
+script = SubResource("GDScript_ss4m2")
+
+[node name="timeText" type="Label" parent="."]
+visible = false
+offset_left = 456.0
+offset_top = 561.0
+offset_right = 563.0
+offset_bottom = 616.0
+theme_override_font_sizes/font_size = 40
+text = "Time"
+
+[node name="time" type="Label" parent="."]
+visible = false
+offset_left = 458.0
+offset_top = 629.0
+offset_right = 567.0
+offset_bottom = 684.0
+theme_override_font_sizes/font_size = 40
+text = "2.552"
+
+[node name="endText" type="Label" parent="."]
+visible = false
+offset_left = 412.0
+offset_top = 286.0
+offset_right = 609.0
+offset_bottom = 341.0
+theme_override_colors/font_color = Color(0.0326484, 0.0577273, 0.0933875, 1)
+theme_override_font_sizes/font_size = 40
+text = "End Game"
+
+[node name="averageTime" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.5
+offset_top = -27.5
+offset_right = 54.5
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.0976713, 0.0868673, 0.00884922, 1)
+theme_override_font_sizes/font_size = 40
+text = "2.552"
+horizontal_alignment = 1
+
+[node name="stopwatch" type="Node" parent="."]
+script = ExtResource("9_k6k84")
+
+[connection signal="timeout" from="CardManager/Timer" to="CardManager" method="_on_timer_timeout"]

@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://c4pb706hnpv14"]
+
+[ext_resource type="Script" path="res://Scenes/main.gd" id="1_6iij3"]
+[ext_resource type="PackedScene" uid="uid://b3f7sgdq0vcus" path="res://Scenes/play_space.tscn" id="2_5ec7y"]
+[ext_resource type="PackedScene" uid="uid://ljhitg1khbk" path="res://Scenes/opponent_player_space.tscn" id="3_fhp1n"]
+[ext_resource type="PackedScene" uid="uid://prup4x65620n" path="res://Scenes/single_player_field.tscn" id="4_3deao"]
+[ext_resource type="Script" path="res://Scenes/card_manager.gd" id="5_kabsd"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_6iij3")
+playerScene = ExtResource("2_5ec7y")
+opponentScene = ExtResource("3_fhp1n")
+singlePlayerScene = ExtResource("4_3deao")
+
+[node name="HostButton" type="Button" parent="."]
+offset_left = 245.0
+offset_top = 233.0
+offset_right = 289.0
+offset_bottom = 264.0
+text = "Host
+"
+
+[node name="JoinButton" type="Button" parent="."]
+offset_left = 775.0
+offset_top = 225.0
+offset_right = 813.0
+offset_bottom = 256.0
+text = "Join
+"
+
+[node name="SinglePlayer" type="Button" parent="."]
+offset_left = 456.0
+offset_top = 75.0
+offset_right = 563.0
+offset_bottom = 106.0
+text = "Single Player"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="CardManager" type="Node" parent="."]
+script = ExtResource("5_kabsd")
+
+[node name="Timer" type="Timer" parent="CardManager"]
+
+[connection signal="pressed" from="HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="SinglePlayer" to="." method="_on_single_player_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
