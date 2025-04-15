@@ -43,9 +43,6 @@ func _ready() -> void:
 	timer =  $Timer
 	stopwatch = $"../stopwatch"
 	
-func startGame() -> void:
-	print("Hello")
-	
 func addToCardPool(cardname: String) -> void:
 	cardpool.append(cardname)
 	

@@ -33,13 +33,11 @@ func _on_join_button_pressed() -> void:
 	add_child(pScene)
 	var oScene = opponentScene.instantiate()
 	add_child(oScene)
-	#cardManager.client_set_up()
 	
 func _on_peer_connected(_peer_id) -> void:
 	var oScene = opponentScene.instantiate()
 	add_child(oScene)
 	timer.start()
-	#get_node("CardManager").host_set_up()
 	
 func _on_single_player_pressed() -> void:
 	disable_buttons()
@@ -48,4 +46,3 @@ func _on_single_player_pressed() -> void:
 	
 func _on_timer_timeout() -> void:
 	cardManager.startGame()
-	pass # Replace with function body.
