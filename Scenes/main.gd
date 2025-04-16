@@ -36,7 +36,6 @@ func _on_join_button_pressed() -> void:
 	add_child(oScene)
 	
 func _on_peer_connected(_peer_id) -> void:
-	print(_peer_id)
 	var oScene = opponentScene.instantiate()
 	add_child(oScene)
 	timer.start()
