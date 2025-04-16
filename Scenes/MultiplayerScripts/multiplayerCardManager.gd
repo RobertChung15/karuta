@@ -12,22 +12,28 @@ var handSize = 2
 var cardpool = []
 
 func startGame() -> void:
-	rpc("dealCard")
+
+	for i in handSize * 2:
+		var randNumber = randi() % (deck.size())
+		var cardname = deck[randNumber]["name"]
+		var image = deck[randNumber]["image"]
+		cardpool.append(cardname)
+
+		oldDeck.append(deck[randNumber])
+		deck.erase(deck[randNumber])
+
+		rpc("dealCardServer", new_card)
+	#rpc("hello")
 	
-@rpc("call_local", "any_peer")
-func dealCard() -> void:
+@rpc("authority")
+func dealCardServer() -> void:
 	var card = preload(card_scene)
-	for i in handSize:
-		var randomNumber = randi() % (deck.size())
-		var new_card = card.instantiate()
-		new_card.name = deck[randomNumber]["name"]
-		var image = deck[randomNumber]["image"]
-		var cardImagePath = str("res://Cards/" + image + ".png")
-		new_card.get_node("CardImage").texture = load(cardImagePath)
-		oldDeck.append(deck[randomNumber])
-		deck.erase(deck[randomNumber])
-		cardpool.append(new_card.name)
-		add_child(new_card)
-		new_card.position = get_viewport().get_visible_rect().size / 2
+	var new_card = card.instantiate()
+	var cardImagePath = str("res://Cards/" + image + ".png")
+	new_card.get_node("CardImage").texture = load(cardImagePath)
 	
+@rpc("call_remote")
+func dealCard(new_card) -> void:
+	print("client")
+
 	
