@@ -13,6 +13,9 @@ var removeCard = false
 signal hovered
 signal hovered_off
 
+func _enter_tree() -> void:
+	set_multiplayer_authority(int(str(name)))
+
 func _ready() -> void:
 	screen_size = get_viewport().get_visible_rect().size
 	screen_center = get_viewport().get_visible_rect().size / 2

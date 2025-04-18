@@ -44,6 +44,10 @@ script = ExtResource("5_664f6")
 
 [node name="Timer" type="Timer" parent="CardManager"]
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/card_base.tscn")
+spawn_path = NodePath("..")
+
 [connection signal="pressed" from="HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]
 [connection signal="pressed" from="SinglePlayer" to="." method="_on_single_player_pressed"]

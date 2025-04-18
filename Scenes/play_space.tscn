@@ -1,10 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://b3f7sgdq0vcus"]
+[gd_scene load_steps=11 format=3 uid="uid://b3f7sgdq0vcus"]
 
 [ext_resource type="Script" path="res://Scenes/play_space.gd" id="1_tiu1l"]
 [ext_resource type="Shader" path="res://Scenes/play_space.gdshader" id="2_1c3mb"]
-[ext_resource type="Script" path="res://Scenes/PlayerHand.gd" id="2_6wkpr"]
 [ext_resource type="Texture2D" uid="uid://dh6qp40mxftx5" path="res://Cards/tatami3.jpg" id="3_q8x1q"]
 [ext_resource type="PackedScene" uid="uid://cdi57ij2t13pr" path="res://Scenes/card_slot.tscn" id="5_w00en"]
+[ext_resource type="Script" path="res://Scenes/multiplayer_player_hand.gd" id="6_jxm5h"]
 [ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Cards/Deck.png" id="7_kj8w7"]
 [ext_resource type="Script" path="res://Scenes/stopwatch.gd" id="9_qe662"]
 
@@ -14,8 +14,6 @@ shader_parameter/opacity = null
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1lfed"]
 size = Vector2(141.152, 237.638)
-
-[sub_resource type="GDScript" id="GDScript_srln5"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_8d85i"]
 properties/0/path = NodePath("PlayerHand:position")
@@ -86,7 +84,7 @@ position = Vector2(950, 550)
 
 [node name="PlayerHand" type="Node2D" parent="."]
 position = Vector2(583, 518)
-script = ExtResource("2_6wkpr")
+script = ExtResource("6_jxm5h")
 
 [node name="DisplayText" type="Label" parent="."]
 visible = false
@@ -101,7 +99,6 @@ offset_bottom = 83.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 60
 text = "Hello"
-script = SubResource("GDScript_srln5")
 
 [node name="timeText" type="Label" parent="."]
 visible = false

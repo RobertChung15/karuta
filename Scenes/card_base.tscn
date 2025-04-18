@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dmao0l8w0t684"]
+[gd_scene load_steps=15 format=3 uid="uid://dmao0l8w0t684"]
 
 [ext_resource type="Shader" path="res://Scenes/card.gdshader" id="1_6xa7u"]
 [ext_resource type="Script" path="res://Scenes/card_base.gd" id="1_c6dht"]
@@ -274,6 +274,17 @@ _data = {
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bs13f"]
 gradient = SubResource("Gradient_p8kgn")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2ovae"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("CardBack:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("CardImage:position")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
 [node name="CardBase" type="Node2D"]
 material = SubResource("ShaderMaterial_ggijr")
 position = Vector2(2, 0)
@@ -321,6 +332,9 @@ position = Vector2(0.0489955, -10.0693)
 scale = Vector2(2.58488, 3.04973)
 color = Color(1, 1, 0, 1)
 texture = SubResource("GradientTexture2D_bs13f")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_2ovae")
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="Area2D" method="_on_area_2d_mouse_entered"]

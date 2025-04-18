@@ -20,28 +20,31 @@ func startGame() -> void:
 		oldDeck.append(deck[randNumber])
 		deck.erase(deck[randNumber])
 		if i % 2 == 0:
-			rpc("dealCardServer", cardname, image)
+			dealCardServer(cardname, image, i)
 		elif i % 2 == 1:
-			rpc("dealCardClient", cardname, image)
+			rpc("dealCardClient", cardname, image, i)
 	
-@rpc("authority")
-func dealCardServer(cardname, image) -> void:
+func dealCardServer(cardname, image, i) -> void:
 	var player1Hand = $"../PlaySpace/PlayerHand"
-	print("server " + cardname)
 	var card = preload(card_scene)
 	var new_card = card.instantiate()
+	new_card.name = cardname
 	var cardImagePath = str("res://Cards/" + image + ".png")
 	new_card.get_node("CardImage").texture = load(cardImagePath)
 	player1Hand.add_child(new_card)
+	player1Hand.add_card_to_hand(new_card)
+	
 	
 @rpc("call_remote")
-func dealCardClient(cardname, image) -> void:
+func dealCardClient(cardname, image, i) -> void:
 	var player1Hand = $"../PlaySpace/PlayerHand"
-	print("client" + cardname)
 	var card = preload(card_scene)
 	var new_card = card.instantiate()
+	new_card.name = cardname
 	var cardImagePath = str("res://Cards/" + image + ".png")
 	new_card.get_node("CardImage").texture = load(cardImagePath)
 	player1Hand.add_child(new_card)
+	player1Hand.add_card_to_hand(new_card)
+	
 
 	

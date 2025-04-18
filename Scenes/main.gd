@@ -14,7 +14,6 @@ func _on_host_button_pressed() -> void:
 	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_peer_connected)
-	set_multiplayer_authority(1)
 	var pScene = playerScene.instantiate()
 	add_child(pScene)
 
