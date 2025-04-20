@@ -4,7 +4,7 @@
 [ext_resource type="Shader" path="res://Scenes/play_space.gdshader" id="2_1c3mb"]
 [ext_resource type="Texture2D" uid="uid://dh6qp40mxftx5" path="res://Cards/tatami3.jpg" id="3_q8x1q"]
 [ext_resource type="PackedScene" uid="uid://cdi57ij2t13pr" path="res://Scenes/card_slot.tscn" id="5_w00en"]
-[ext_resource type="Script" path="res://Scenes/multiplayer_player_hand.gd" id="6_jxm5h"]
+[ext_resource type="Script" path="res://Scenes/MultiplayerScripts/multiplayer_player_hand.gd" id="6_jxm5h"]
 [ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Cards/Deck.png" id="7_kj8w7"]
 [ext_resource type="Script" path="res://Scenes/stopwatch.gd" id="9_qe662"]
 
@@ -33,7 +33,7 @@ mouse_filter = 2
 color = Color(0.294118, 0.313726, 0.25098, 0)
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(561, 386)
+position = Vector2(562, 372)
 scale = Vector2(0.17442, 0.163274)
 texture = ExtResource("3_q8x1q")
 
@@ -41,7 +41,7 @@ texture = ExtResource("3_q8x1q")
 
 [node name="Deck" type="Node2D" parent="."]
 z_index = 3
-position = Vector2(509, 339)
+position = Vector2(534, 350)
 scale = Vector2(0.630525, 0.563883)
 
 [node name="Area2D" type="Area2D" parent="Deck"]
@@ -52,13 +52,13 @@ position = Vector2(2.37898, -3.54683)
 shape = SubResource("RectangleShape2D_1lfed")
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck"]
-position = Vector2(6.34392, -5.32025)
+position = Vector2(6.34392, -17.7342)
 scale = Vector2(0.76433, 0.901529)
 texture = ExtResource("7_kj8w7")
 
 [node name="CardSlots" type="Node" parent="."]
 
-[node name="CardSlot" parent="CardSlots" instance=ExtResource("5_w00en")]
+[node name="CardSlot1" parent="CardSlots" instance=ExtResource("5_w00en")]
 position = Vector2(100, 400)
 
 [node name="CardSlot2" parent="CardSlots" instance=ExtResource("5_w00en")]
@@ -74,10 +74,10 @@ position = Vector2(250, 550)
 position = Vector2(800, 400)
 
 [node name="CardSlot6" parent="CardSlots" instance=ExtResource("5_w00en")]
-position = Vector2(800, 550)
+position = Vector2(950, 400)
 
 [node name="CardSlot7" parent="CardSlots" instance=ExtResource("5_w00en")]
-position = Vector2(950, 400)
+position = Vector2(800, 550)
 
 [node name="CardSlot8" parent="CardSlots" instance=ExtResource("5_w00en")]
 position = Vector2(950, 550)

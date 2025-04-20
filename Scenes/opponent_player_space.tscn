@@ -13,45 +13,39 @@ shader_parameter/opacity = null
 modulate = Color(0.783523, 0.783523, 0.783523, 1)
 z_index = 1
 material = SubResource("ShaderMaterial_312an")
-offset_right = 1081.0
+offset_left = 2.0
+offset_right = 1083.0
 offset_bottom = 722.0
 mouse_filter = 2
 color = Color(0.294118, 0.313726, 0.25098, 0)
-
-[node name="CardManager" type="Node" parent="."]
-
-[node name="Timer" type="Timer" parent="CardManager"]
-one_shot = true
 
 [node name="Cards" type="Node" parent="."]
 
 [node name="CardSlots" type="Node" parent="."]
 
-[node name="CardSlot" parent="CardSlots" instance=ExtResource("7_84uwg")]
-position = Vector2(100, 100)
+[node name="CardSlot1" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(950, 250)
 
 [node name="CardSlot2" parent="CardSlots" instance=ExtResource("7_84uwg")]
-position = Vector2(250, 100)
-
-[node name="CardSlot3" parent="CardSlots" instance=ExtResource("7_84uwg")]
-position = Vector2(100, 250)
-
-[node name="CardSlot4" parent="CardSlots" instance=ExtResource("7_84uwg")]
-position = Vector2(250, 250)
-
-[node name="CardSlot5" parent="CardSlots" instance=ExtResource("7_84uwg")]
-position = Vector2(800, 100)
-
-[node name="CardSlot6" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(800, 250)
 
-[node name="CardSlot7" parent="CardSlots" instance=ExtResource("7_84uwg")]
+[node name="CardSlot3" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(950, 100)
 
+[node name="CardSlot4" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(800, 100)
+
+[node name="CardSlot5" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(250, 250)
+
+[node name="CardSlot6" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(100, 250)
+
+[node name="CardSlot7" parent="CardSlots" instance=ExtResource("7_84uwg")]
+position = Vector2(250, 100)
+
 [node name="CardSlot8" parent="CardSlots" instance=ExtResource("7_84uwg")]
-position = Vector2(950, 250)
+position = Vector2(100, 100)
 
 [node name="PlayerHand" type="Node2D" parent="."]
 position = Vector2(583, 518)
-
-[connection signal="timeout" from="CardManager/Timer" to="CardManager" method="_on_timer_timeout"]

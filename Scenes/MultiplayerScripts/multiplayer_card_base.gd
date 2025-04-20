@@ -12,15 +12,23 @@ var isInSlot = false
 var removeCard = false
 signal hovered
 signal hovered_off
+var playerHand
+var player1Ready = false
+var player2Ready = false
+var imageLink
 
 func _ready() -> void:
 	screen_size = get_viewport().get_visible_rect().size
 	screen_center = get_viewport().get_visible_rect().size / 2
-	playerHandRef = $"../../PlayerHand"
-	cardManager = $"../../CardManager"
 	add_to_group("draggable")
 	add_to_group("inHand")
-
+	playerHand = get_node("/root/Main/PlaySpace/PlayerHand")
+	cardManager = get_node("/root/Main/CardManager")
+	
+func _process(_delta: float) -> void:
+	if dragging:
+		position = get_global_mouse_position() + offset
+	
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	var mouse_pos = get_global_mouse_position()
 	if event is InputEventMouseButton:
@@ -42,79 +50,47 @@ func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 			if cardManager.cardname == self.name:
 				removeCard = true
 				checkNearbyCards()
-
-func _process(_delta: float) -> void:
-	if dragging:
-		position = get_global_mouse_position() + offset
-
-func checkNearbyCards():
-	var cards = get_tree().get_nodes_in_group("inPlay")
-	for obj in cards:
-		if (self.position.distance_to(obj.position) < 200):
-			impulseCard(obj)
-	
-func impulseCard(obj):
-	var mouse_pos = get_global_mouse_position()
-	var direction = (obj.position - mouse_pos).normalized()
-	var distance = 50
-	var rotation_angle = randf_range(-30, 30)
-	var original_position = obj.position
-	#move card to position
-	var tween = get_tree().create_tween()
-	var endPosition = obj.position + (direction * distance)
-	tween.tween_property(obj, "position", endPosition, 0.1)
-	tween.tween_property(obj, "rotation", deg_to_rad(rotation_angle), 0.05)
-	cardManager.pauseTime()
-	var timer: Timer = obj.get_node("Timer")
-	timer.timeout.connect(resetPosition.bind(obj, original_position))
-	timer.start()
-
-func resetPosition(obj, original_position):
-	if obj.removeCard:
-		moveCardToCenter()
-		cardManager.callJudge()
-	else:
-		var tween = get_tree().create_tween()
-		tween.tween_property(obj, "position", original_position, 0.1)
-		tween.tween_property(obj, "rotation", 0, 0.1)
-	
+				
 func checkForSlot():
 	var areas = $Area2D.get_overlapping_areas()
 	for area in areas:
 		if area.get_parent().is_in_group("card_slot_empty"):
-			position = area.get_parent().position
+			position = playerHand.to_local(area.get_parent().position)
 			area.get_parent().fillCardSlot()
 			remove_from_group("inHand")
 			add_to_group("inPlay")
-			playerHandRef.remove_card_from_hand(self)
 			remove_from_group("draggable")
 			add_to_group("inPlay")
 			isInSlot = true;
-			if playerHandRef.playerHand.size() == 0:
-				cardManager.playGame()
-		break
+			if multiplayer.is_server():
+				cardManager.rpc("placeCardInClientOpponentZone", name, imageLink, area.get_parent().name)
+			elif !multiplayer.is_server():
+				cardManager.rpc("placeCardInServerOpponentZone", name, imageLink, area.get_parent().name)
+			if playerHand.playerHand.size() == 0:
+				if multiplayer.is_server():
+					print("server ready")
+				elif not multiplayer.is_server():
+					print("client ready")
+					player2Ready = true
 	if not isInSlot:
-		returnToHand()
+		returnCardToHand()
+	if player1Ready and player2Ready:
+		print("hello")
+		cardManager.rpc("startReading")
 		
-func moveCardToCenter():
-	self.z_index = 2
-	var tween = get_tree().create_tween()
-	tween.tween_property(self, "position", screen_center, 0.3)
-	tween.tween_property(self, "rotation", 0, 0.05)
-	tween.tween_property(self, "scale", Vector2(1, 1), 0.1)
-	$AnimationPlayer.play("selected")
-	
-func returnToHand():
+func returnCardToHand():
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "position", startingPosition, 0.3)
 	add_to_group("draggable")
-				
+
+func checkNearbyCards():
+	pass
+	
 func _on_area_2d_mouse_entered() -> void:
 	if(!isInSlot):
 		highlight_card(self, true)
 
 func _on_area_2d_mouse_exited() -> void:
-	if(!isInSlot):
 		highlight_card(self, false)
 
 func highlight_card(card, hovered):
