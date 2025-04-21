@@ -13,6 +13,8 @@ var cardpool = []
 var startingPosition
 var imageLink
 var cardScene
+var player1Ready = false
+var player2Ready = false
 
 func _ready() -> void:
 	cardScene = preload(card_scene)
@@ -78,14 +80,17 @@ func placeCardInServerOpponentZone(opponentCardName, opponentCardImageLink, card
 @rpc("any_peer", "call_remote")
 func startReading() -> void:
 	var displayText = $"../PlaySpace/DisplayText"
-	print("starting")
 	displayText.text = "Starting"
-	
-	
-	
-	
-	
+	displayText.visible = true
 
+@rpc("any_peer")
+func readyClient() -> void:
+	player2Ready = true
+	checkReady()
+	
+func checkReady() -> void:
+	if(player1Ready and player2Ready):
+		startReading()
 	
 
 	

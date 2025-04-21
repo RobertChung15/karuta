@@ -13,8 +13,6 @@ var removeCard = false
 signal hovered
 signal hovered_off
 var playerHand
-var player1Ready = false
-var player2Ready = false
 var imageLink
 
 func _ready() -> void:
@@ -64,19 +62,18 @@ func checkForSlot():
 			isInSlot = true;
 			if multiplayer.is_server():
 				cardManager.rpc("placeCardInClientOpponentZone", name, imageLink, area.get_parent().name)
+				playerHand.playerHand.erase(self)
 			elif !multiplayer.is_server():
 				cardManager.rpc("placeCardInServerOpponentZone", name, imageLink, area.get_parent().name)
+				playerHand.playerHand.erase(self)
 			if playerHand.playerHand.size() == 0:
 				if multiplayer.is_server():
-					print("server ready")
+					cardManager.player1Ready = true
+					cardManager.checkReady()
 				elif not multiplayer.is_server():
-					print("client ready")
-					player2Ready = true
+					cardManager.rpc("readyClient")
 	if not isInSlot:
 		returnCardToHand()
-	if player1Ready and player2Ready:
-		print("hello")
-		cardManager.rpc("startReading")
 		
 func returnCardToHand():
 	var tween = get_tree().create_tween()
