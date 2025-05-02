@@ -25,27 +25,35 @@ color = Color(0.294118, 0.313726, 0.25098, 0)
 
 [node name="CardSlot1" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(950, 250)
+script = null
 
 [node name="CardSlot2" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(800, 250)
+script = null
 
 [node name="CardSlot3" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(950, 100)
+script = null
 
 [node name="CardSlot4" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(800, 100)
+script = null
 
 [node name="CardSlot5" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(250, 250)
+script = null
 
 [node name="CardSlot6" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(100, 250)
+script = null
 
 [node name="CardSlot7" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(250, 100)
+script = null
 
 [node name="CardSlot8" parent="CardSlots" instance=ExtResource("7_84uwg")]
 position = Vector2(100, 100)
+script = null
 
 [node name="PlayerHand" type="Node2D" parent="."]
 position = Vector2(583, 518)

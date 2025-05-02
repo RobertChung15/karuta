@@ -6,7 +6,6 @@ var deck = [{"name": "Bo Peep", "image": "BoPeep"},
 {"name": "Three Little Pigs", "image": "threelittlepigs"}]
 var oldDeck = []
 var playerHand
-var opponentHand
 var player_hands
 var handSize = 2
 var cardpool = []
@@ -15,9 +14,18 @@ var imageLink
 var cardScene
 var player1Ready = false
 var player2Ready = false
+var centre_screen_x
+var countdown = 3;
+var displayText;
+var timer;
+var cardname;
+var stopwatch;
 
 func _ready() -> void:
+	stopwatch = $"../PlaySpace/stopwatch"
 	cardScene = preload(card_scene)
+	var visible_rect = get_viewport().get_visible_rect()
+	centre_screen_x = visible_rect.position.x + (visible_rect.size.x / 2)
 
 func startGame() -> void:
 	for i in handSize * 2:
@@ -77,11 +85,13 @@ func placeCardInServerOpponentZone(opponentCardName, opponentCardImageLink, card
 	opponentCards.add_child(opponentCardObject)
 	opponentCardObject.position = chosenCardSlot.position
 
-@rpc("any_peer", "call_remote")
+@rpc("call_remote")
 func startReading() -> void:
-	var displayText = $"../PlaySpace/DisplayText"
+	displayText = $"../PlaySpace/HBoxContainer/DisplayText"
 	displayText.text = "Starting"
 	displayText.visible = true
+	timer = $Timer
+	timer.start()
 
 @rpc("any_peer")
 func readyClient() -> void:
@@ -91,6 +101,28 @@ func readyClient() -> void:
 func checkReady() -> void:
 	if(player1Ready and player2Ready):
 		startReading()
+		rpc("startReading")
 	
-
+func _on_timer_timeout() -> void:
+	countdown -= 1
+	displayText.text = str(countdown)
+	if(countdown <= 0):
+		if(cardpool.size() > 0):
+			pass
+			cardname = pickRandomCard()
+			removeCardFromPool(cardname)
+			stopwatch.reset()
+			stopwatch.stopped = false
+			displayText.text = cardname
+		timer.stop()
+	else:
+		timer.start()
 	
+func pickRandomCard() -> String:
+	var randomNumber = randi() % (cardpool.size())
+	var cardname = cardpool[randomNumber]
+	return cardname
+	
+func removeCardFromPool(cardname: String) -> void:
+	if cardpool.has(cardname):
+		cardpool.erase(cardname)
