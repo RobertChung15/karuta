@@ -1,13 +1,13 @@
 [gd_scene load_steps=13 format=3 uid="uid://prup4x65620n"]
 
-[ext_resource type="Script" path="res://Scenes/play_space.gd" id="1_6au77"]
+[ext_resource type="Script" path="res://Scenes/SinglePlayer/play_space.gd" id="1_6au77"]
 [ext_resource type="Shader" path="res://Scenes/play_space.gdshader" id="2_uh0eu"]
 [ext_resource type="Texture2D" uid="uid://dh6qp40mxftx5" path="res://Cards/tatami3.jpg" id="3_lr5o4"]
-[ext_resource type="Script" path="res://Scenes/card_manager.gd" id="4_1acfp"]
-[ext_resource type="Script" path="res://Scenes/deck.gd" id="5_1nqhv"]
+[ext_resource type="Script" path="res://Scenes/SinglePlayer/card_manager.gd" id="4_1acfp"]
+[ext_resource type="Script" path="res://Scenes/SinglePlayer/deck.gd" id="5_1nqhv"]
 [ext_resource type="Texture2D" uid="uid://cwcy35e1mv1xj" path="res://Cards/Deck.png" id="6_rasfk"]
 [ext_resource type="PackedScene" uid="uid://cdi57ij2t13pr" path="res://Scenes/card_slot.tscn" id="7_yyg6m"]
-[ext_resource type="Script" path="res://Scenes/PlayerHand.gd" id="8_qmqgi"]
+[ext_resource type="Script" path="res://Scenes/SinglePlayer/PlayerHand.gd" id="8_qmqgi"]
 [ext_resource type="Script" path="res://Scenes/stopwatch.gd" id="9_cwom1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_22aaf"]

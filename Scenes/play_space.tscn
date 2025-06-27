@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://b3f7sgdq0vcus"]
 
-[ext_resource type="Script" path="res://Scenes/play_space.gd" id="1_tiu1l"]
+[ext_resource type="Script" path="res://Scenes/SinglePlayer/play_space.gd" id="1_tiu1l"]
 [ext_resource type="Shader" path="res://Scenes/play_space.gdshader" id="2_1c3mb"]
 [ext_resource type="Texture2D" uid="uid://dh6qp40mxftx5" path="res://Cards/tatami3.jpg" id="3_q8x1q"]
 [ext_resource type="PackedScene" uid="uid://cdi57ij2t13pr" path="res://Scenes/card_slot.tscn" id="5_w00en"]

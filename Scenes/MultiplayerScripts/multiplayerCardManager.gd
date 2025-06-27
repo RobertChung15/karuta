@@ -20,6 +20,7 @@ var displayText;
 var timer;
 var cardname;
 var stopwatch;
+var winner_found = false;
 
 func _ready() -> void:
 	stopwatch = $"../PlaySpace/stopwatch"
@@ -68,6 +69,9 @@ func placeCardInClientOpponentZone(opponentCardName, opponentCardImageLink, card
 	var opponentCardObject = cardScene.instantiate()
 	opponentCardObject.remove_from_group("draggable")
 	opponentCardObject.name = opponentCardName
+	opponentCardObject.add_to_group("inPlay")
+	opponentCardObject.isInSlot = true
+	opponentCardObject.imageLink = opponentCardImageLink
 	opponentCardObject.get_node("CardImage").texture = load(opponentCardImageLink)
 	var chosenCardSlot = opponentPlayspace.get_node("CardSlots/" + cardSlotName)
 	var opponentCards = opponentPlayspace.get_node("Cards")
@@ -79,7 +83,10 @@ func placeCardInServerOpponentZone(opponentCardName, opponentCardImageLink, card
 	var opponentPlayspace = $"../OpponentPlayerSpace"
 	var opponentCardObject = cardScene.instantiate()
 	opponentCardObject.name = opponentCardName
+	opponentCardObject.imageLink = opponentCardImageLink
 	opponentCardObject.get_node("CardImage").texture = load(opponentCardImageLink)
+	opponentCardObject.add_to_group("inPlay")
+	opponentCardObject.isInSlot = true
 	var chosenCardSlot = opponentPlayspace.get_node("CardSlots/" + cardSlotName)
 	var opponentCards = opponentPlayspace.get_node("Cards")
 	opponentCards.add_child(opponentCardObject)
@@ -88,7 +95,7 @@ func placeCardInServerOpponentZone(opponentCardName, opponentCardImageLink, card
 @rpc("call_remote")
 func startReading() -> void:
 	displayText = $"../PlaySpace/HBoxContainer/DisplayText"
-	displayText.text = "Starting"
+	displayText.text = "3"
 	displayText.visible = true
 	timer = $Timer
 	timer.start()
@@ -100,23 +107,23 @@ func readyClient() -> void:
 	
 func checkReady() -> void:
 	if(player1Ready and player2Ready):
+		countdown = 3
 		startReading()
 		rpc("startReading")
 	
 func _on_timer_timeout() -> void:
 	countdown -= 1
-	displayText.text = str(countdown)
-	if(countdown <= 0):
-		if(cardpool.size() > 0):
-			pass
-			cardname = pickRandomCard()
-			removeCardFromPool(cardname)
-			stopwatch.reset()
-			stopwatch.stopped = false
-			displayText.text = cardname
-		timer.stop()
-	else:
+	if(countdown > 0):
+		displayText.text = str(countdown)
 		timer.start()
+	else:
+		if(cardpool.size() > 0):
+			if multiplayer.is_server():
+				cardname = pickRandomCard()
+				removeCardFromPool(cardname)
+				displaySelectedPoem(cardname)
+				rpc("displaySelectedPoem", cardname)
+		timer.stop()
 	
 func pickRandomCard() -> String:
 	var randomNumber = randi() % (cardpool.size())
@@ -126,3 +133,16 @@ func pickRandomCard() -> String:
 func removeCardFromPool(cardname: String) -> void:
 	if cardpool.has(cardname):
 		cardpool.erase(cardname)
+
+@rpc("call_remote")
+func displaySelectedPoem(selectedCardName: String) -> void:
+	displayText.text = selectedCardName
+	winner_found = false
+
+@rpc("any_peer")
+func checkWinner(player_id: int) -> void:
+	print(player_id)
+	if not winner_found:
+		winner_found = true
+		print("Winner: Player ", player_id)
+		displayText.text = "Winner: Player " + str(player_id)

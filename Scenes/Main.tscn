@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://c4pb706hnpv14"]
 
-[ext_resource type="Script" path="res://Scenes/main.gd" id="1_6iij3"]
+[ext_resource type="Script" path="res://Scenes/MultiplayerScripts/main.gd" id="1_6iij3"]
 [ext_resource type="PackedScene" uid="uid://b3f7sgdq0vcus" path="res://Scenes/play_space.tscn" id="2_5ec7y"]
 [ext_resource type="PackedScene" uid="uid://ljhitg1khbk" path="res://Scenes/opponent_player_space.tscn" id="3_fhp1n"]
-[ext_resource type="PackedScene" uid="uid://prup4x65620n" path="res://Scenes/single_player_field.tscn" id="4_3deao"]
+[ext_resource type="PackedScene" uid="uid://prup4x65620n" path="res://Scenes/SinglePlayer/single_player_field.tscn" id="4_3deao"]
 [ext_resource type="Script" path="res://Scenes/MultiplayerScripts/multiplayerCardManager.gd" id="5_664f6"]
 
 [node name="Main" type="Node2D"]

@@ -81,7 +81,7 @@ func returnCardToHand():
 	add_to_group("draggable")
 
 func checkNearbyCards():
-	pass
+	cardManager.rpc("checkWinner", multiplayer.get_unique_id())
 	
 func _on_area_2d_mouse_entered() -> void:
 	if(!isInSlot):
